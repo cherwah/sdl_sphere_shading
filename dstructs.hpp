@@ -2,23 +2,13 @@
 #define DSTRUCT_HPP
 
 
-class point2d {
+class vector3d {
 public:
-    point2d() : x(0), y(0) {};
-    point2d(float x, float y) : x(x), y(y) {};
-
-    float x, y;
-};
-
-
-class point3d {
-public:
-    point3d() : x(0), y(0), z(0) {};
-    point3d(float x, float y, float z) : x(x), y(y), z(z) {};
+    vector3d() : x(0), y(0), z(0) {};
+    vector3d(float x, float y, float z) : x(x), y(y), z(0) {};
 
     float x, y, z;
 };
-
 
 class rgba {
 public:
@@ -28,32 +18,13 @@ public:
     int r, g, b, a;
 };
 
-
-class vertex2d {
-public:
-    vertex2d(point2d pos, rgba color) : pos(pos), color(color) {}
-
-    point2d pos;
-    rgba color;
-};
-
-
 class vertex3d {
 public:
-    vertex3d(point3d pos, rgba color) : pos(pos), color(color) {}
+    vertex3d(vector3d pos, rgba color) : pos(pos), color(color) {}
 
-    point3d pos;
+    vector3d pos;
     rgba color;
 };
-
-
-class edge2d {
-public:
-    edge2d(vertex2d v0, vertex2d v1) : v0(v0), v1(v1) {}
-
-    vertex2d v0, v1;
-};
-
 
 class edge3d {
 public:

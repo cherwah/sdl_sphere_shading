@@ -4,8 +4,7 @@
 #include <vector>
 #include "dstructs.hpp"
 
-void model_to_world(point3d& trans)
-{
+void to_world(std::vector<vector3d> vertices, vector3d& trans) {
 
 };
 
