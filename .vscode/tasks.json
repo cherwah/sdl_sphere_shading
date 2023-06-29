@@ -1,0 +1,17 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "clang++ -g -std=c++17 *.cpp -lSDL2 -lSDL2_TTF -o ${fileDirname}/main.out",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+        }
+    ],
+    "presentation": {
+        "reveal": "silent",
+    }
+}
