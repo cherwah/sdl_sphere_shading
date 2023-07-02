@@ -6,9 +6,12 @@
 
 
 // bring model from object space to world space
-void to_world_space(std::vector<vector3d>& model_vertices, vector3d& translate, std::vector<vector3d>& world_vertices) {
+void to_world_space(std::vector<vector3d>& model_vertices, world_info& world_info, std::vector<vector3d>& world_vertices) {
     for (int i=0; i<model_vertices.size(); i++) {
-        world_vertices.emplace_back(model_vertices[i] + translate);
+        vector3d v = model_vertices[i] * world_info.scale;
+        v = v * world_info.rotate;
+        v = v + world_info.translate;
+        world_vertices.emplace_back(v);
     }
 };
 

@@ -16,6 +16,10 @@ public:
         return vector3d(x + rhs.x, y + rhs.y, z + rhs.z);
     }
 
+    vector3d operator*(const vector3d& rhs) {
+        return vector3d(x * rhs.x, y * rhs.y, z * rhs.z);
+    }
+
     float x, y, z;
 };
 
@@ -41,6 +45,14 @@ public:
         : v0(v0), v1(v1) {}
 
     vertex3d v0, v1;
+};
+
+class world_info {
+public:
+    world_info(vector3d& scale, vector3d& rotate, vector3d& translate) 
+        : scale(scale), rotate(rotate), translate(translate) {}
+
+    vector3d scale, rotate, translate;
 };
 
 class cam_info {
