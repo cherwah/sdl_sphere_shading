@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "text.hpp"
+#include "model.hpp"
 
 int main(int argc, char* argv[]) {
 
@@ -21,6 +22,13 @@ int main(int argc, char* argv[]) {
     float width = 540;
     float height = 540;
 
+    // create model
+    std::vector<vector3d> vertices;
+    create_uv_sphere(vertices);
+
+    
+
+    
     // initializing underlying grpahics API
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         std::cout << "SDL initialization failed: " << SDL_GetError() << "\n";

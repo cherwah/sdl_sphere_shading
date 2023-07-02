@@ -7,7 +7,9 @@
 
 // bring model from object space to world space
 void to_world_space(std::vector<vector3d>& model_vertices, vector3d& translate, std::vector<vector3d>& world_vertices) {
-
+    for (int i=0; i<model_vertices.size(); i++) {
+        world_vertices.emplace_back(model_vertices[i] + translate);
+    }
 };
 
 // bring model to camera space

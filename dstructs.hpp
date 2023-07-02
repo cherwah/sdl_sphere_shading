@@ -1,19 +1,27 @@
 #ifndef DSTRUCT_HPP
 #define DSTRUCT_HPP
 
+class point2d {
+public:
+    point2d(int x=0, int y=0) : x(x), y(y) {};
+
+    int x, y;
+};
 
 class vector3d {
 public:
-    vector3d() : x(0), y(0), z(0) {};
-    vector3d(float x, float y, float z) : x(x), y(y), z(0) {};
+    vector3d(float x=0, float y=0, float z=0) : x(x), y(y), z(z) {};
+
+    vector3d operator+(const vector3d& rhs) {
+        return vector3d(x + rhs.x, y + rhs.y, z + rhs.z);
+    }
 
     float x, y, z;
 };
 
 class rgba {
 public:
-    rgba() : r(0), g(0), b(0), a(0) {}; 
-    rgba(int r, int g, int b, int a) : r(r), g(g), b(b), a(a) {};
+    rgba(int r=0, int g=0, int b=0, int a=0) : r(r), g(g), b(b), a(a) {};
 
     int r, g, b, a;
 };
@@ -50,6 +58,7 @@ public:
 
     float fov, aspect_ratio, near, far;
 };
+
 
 
 
