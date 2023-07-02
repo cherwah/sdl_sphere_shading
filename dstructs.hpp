@@ -20,6 +20,22 @@ public:
         return vector3d(x * rhs.x, y * rhs.y, z * rhs.z);
     }
 
+    float dot_product(const vector3d& rhs) {
+        return x * rhs.x + y * rhs.y + z * rhs.z;
+    }
+
+    vector3d cross_product(const vector3d& rhs) {
+        return vector3d(y * rhs.z - z * rhs.y, z * rhs.x - x * rhs.z, x * rhs.y - y * rhs.x);
+    }
+
+    void normalize() {
+        float length = sqrt(x * x + y * y + z * z);
+        
+        x /= length;
+        y /= length;
+        z /= length;
+    }
+
     float x, y, z;
 };
 
