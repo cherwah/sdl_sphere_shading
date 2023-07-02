@@ -4,8 +4,26 @@
 #include <vector>
 #include "dstructs.hpp"
 
-void to_world(std::vector<vector3d> vertices, vector3d& trans) {
+
+// bring model from object space to world space
+void to_world_space(std::vector<vector3d>& model_vertices, vector3d& translate, std::vector<vector3d>& world_vertices) {
 
 };
+
+// bring model to camera space
+void to_camera_space(std::vector<vector3d>& world_vertices, cam_info& cam_info, std::vector<vector3d>& cam_vertices) {
+}
+
+// projecting 3d vertices to 2d vertices
+void to_projection_space(std::vector<vector3d>& vertices, proj_info& proj_info, std::vector<vector3d>& proj_vertices) {
+}
+
+// perspective division and clip vertices within frustum volume
+void to_clip_space(std::vector<vector3d>& vertices, std::vector<vector3d>& clip_vertices) {
+}
+
+// maps NDC values to a SDL graphics window
+void to_screen_space(std::vector<vector3d>& clip_vertices, std::vector<vector3d>& srn_vertices) {
+}   
 
 #endif
