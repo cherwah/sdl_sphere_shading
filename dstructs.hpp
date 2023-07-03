@@ -1,6 +1,8 @@
 #ifndef DSTRUCT_HPP
 #define DSTRUCT_HPP
 
+#include <cmath>
+
 class point2d {
 public:
     point2d(int x=0, int y=0) : x(x), y(y) {};
