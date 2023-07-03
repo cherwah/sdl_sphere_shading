@@ -1,7 +1,7 @@
 #ifndef MODEL_HPP
 #define MODEL_HPP
 
-#include "dstructs.hpp"
+#include "structs.hpp"
 #include <iostream>
 #include <cmath>
 
