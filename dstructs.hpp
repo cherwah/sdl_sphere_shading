@@ -78,7 +78,7 @@ public:
     cam_info(vector3d& pos, vector3d& up, vector3d& look)
         : pos(pos), up(up), look(look) {}
 
-    vector3d pos, up, look;
+    vector3d pos, up, look, right;
 };
 
 class proj_info {
