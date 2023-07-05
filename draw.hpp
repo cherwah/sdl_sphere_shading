@@ -3,7 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include <vector>
-#include "dstructs.hpp"
+#include "structs.hpp"
 
 void draw_uv_sphere(SDL_Surface* surface, std::vector<point2d>& vertices) 
 {
