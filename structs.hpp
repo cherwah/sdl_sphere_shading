@@ -10,27 +10,27 @@ public:
     int x, y;
 };
 
-class vector3d {
+class vec3 {
 public:
-    vector3d(float x=0, float y=0, float z=0) : x(x), y(y), z(z) {};
+    vec3(float x=0, float y=0, float z=0) : x(x), y(y), z(z) {};
 
-    vector3d operator+(const vector3d& rhs) {
-        return vector3d(x + rhs.x, y + rhs.y, z + rhs.z);
+    vec3 operator+(const vec3& rhs) {
+        return vec3(x + rhs.x, y + rhs.y, z + rhs.z);
     }
 
-    vector3d operator*(const vector3d& rhs) {
-        return vector3d(x * rhs.x, y * rhs.y, z * rhs.z);
+    vec3 operator*(const vec3& rhs) {
+        return vec3(x * rhs.x, y * rhs.y, z * rhs.z);
     }
 
-    float dot_product(const vector3d& rhs) {
+    float dot(const vec3& rhs) {
         return x * rhs.x + y * rhs.y + z * rhs.z;
     }
 
-    vector3d cross_product(const vector3d& rhs) {
-        return vector3d(y * rhs.z - z * rhs.y, z * rhs.x - x * rhs.z, x * rhs.y - y * rhs.x);
+    vec3 cross(const vec3& rhs) {
+        return vec3(y * rhs.z - z * rhs.y, z * rhs.x - x * rhs.z, x * rhs.y - y * rhs.x);
     }
 
-    void normalize() {
+    void norm() {
         float length = sqrt(x * x + y * y + z * z);
         
         x /= length;
@@ -48,42 +48,42 @@ public:
     int r, g, b, a;
 };
 
-class vertex3d {
+class vrtx3 {
 public:
-    vertex3d(vector3d& pos, rgba& color) 
+    vrtx3(vec3& pos, rgba& color) 
         : pos(pos), color(color) {}
 
-    vector3d pos;
+    vec3 pos;
     rgba color;
 };
 
 class edge3d {
 public:
-    edge3d(vertex3d& v0, vertex3d& v1) 
+    edge3d(vrtx3& v0, vrtx3& v1) 
         : v0(v0), v1(v1) {}
 
-    vertex3d v0, v1;
+    vrtx3 v0, v1;
 };
 
-class world_info {
+class world_attr {
 public:
-    world_info(vector3d& scale, vector3d& rotate, vector3d& translate) 
-        : scale(scale), rotate(rotate), translate(translate) {}
+    world_attr(vec3& scale, vec3& rot, vec3& trans) 
+        : scale(scale), rot(rot), trans(trans) {}
 
-    vector3d scale, rotate, translate;
+    vec3 scale, rot, trans;
 };
 
-class cam_info {
+class cam_attr {
 public:
-    cam_info(vector3d& pos, vector3d& up, vector3d& look)
+    cam_attr(vec3& pos, vec3& up, vec3& look)
         : pos(pos), up(up), look(look) {}
 
-    vector3d pos, up, look, right, origin_offset;
+    vec3 pos, up, look, right, orig_ofst;
 };
 
-class proj_info {
+class proj_attr {
 public:
-    proj_info(float fov, float aspect_ratio, float near, float far)
+    proj_attr(float fov, float aspect_ratio, float near, float far)
         : fov(fov), aspect_ratio(aspect_ratio), near(near), far(far) {}
 
     float fov, aspect_ratio, near, far;

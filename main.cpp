@@ -5,13 +5,14 @@
 
 #include "text.hpp"
 #include "model.hpp"
+#include "draw.hpp"
+#include "transform.hpp"
+
 
 int main(int argc, char* argv[]) {
 
     /******************************************************
-     *
      * Initialize SDL.
-     * 
      *****************************************************/
     SDL_Window* window;
     SDL_Renderer* renderer;
@@ -22,13 +23,7 @@ int main(int argc, char* argv[]) {
     float width = 540;
     float height = 540;
 
-    // create model
-    std::vector<vector3d> vertices;
-    create_uv_sphere(vertices);
 
-    
-
-    
     // initializing underlying grpahics API
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         std::cout << "SDL initialization failed: " << SDL_GetError() << "\n";
@@ -69,17 +64,32 @@ int main(int argc, char* argv[]) {
 
 
     /******************************************************
-     *
      * Setup our Sphere model.
-     * 
      *****************************************************/
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
+    // create model
+    std::vector<vec3> model_vrtx, world_vrtx, cam_vrtx, proj_vrtx, clip_vrtx, srn_vrtx;
+    create_uv_sphere(model_vrtx);
+
+    // transform to world space
+    vec3 scale(1, 1, 1);
+    vec3 rot(0, 0, 0);
+    vec3 trans(0, 0, 0);
+    world_attr world_attr(scale, rot, trans);
+    to_world_space(model_vrtx, world_attr, world_vrtx);  
+
+    // transform to camera space
+    vec3 pos(0, 0, 0);
+    vec3 up(0, 1, 0);
+    vec3 look(0, 0, 1);
+    cam_attr cam_attr(pos, up, look);
+    to_cam_space(world_vrtx, cam_attr, cam_vrtx);
+    
+
 
     /******************************************************
-     *
      * SDL Event Loop.
-     * 
      *****************************************************/
     Uint32 times = 0, start_tick, fps = 60;
 
@@ -101,6 +111,13 @@ int main(int argc, char* argv[]) {
         // clear screen
         SDL_FillRect(surface, NULL, SDL_MapRGBA(surface->format, 0, 0, 0, 255));
 
+
+
+        // draw model
+
+        std::vector
+        draw_uv_sphere(surface, model_vrtx);
+
         times++;
         draw_text(surface, font, 0, 0, "FPS: " + std::to_string(fps), "right");
 
@@ -108,6 +125,7 @@ int main(int argc, char* argv[]) {
             fps = times;
             times = 0;
         }      
+        
 
         // update texture
         SDL_UpdateTexture(texture, NULL, surface->pixels, surface->pitch);       
@@ -121,9 +139,7 @@ int main(int argc, char* argv[]) {
     }
 
     /******************************************************
-     *
      * Clean up.
-     * 
      *****************************************************/
     TTF_Quit();
 
