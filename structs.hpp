@@ -83,10 +83,10 @@ public:
 
 class proj_attr {
 public:
-    proj_attr(float fov, float aspect_ratio, float near, float far)
-        : fov(fov), aspect_ratio(aspect_ratio), near(near), far(far) {}
+    proj_attr(float fov, float aspect, float near, float far)
+        : fov(fov), aspect(aspect), near(near), far(far) {}
 
-    float fov, aspect_ratio, near, far;
+    float fov, aspect, near, far;
 };
 
 
