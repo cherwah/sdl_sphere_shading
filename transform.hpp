@@ -79,7 +79,17 @@ void to_proj_space(std::vector<vec3>& cam_vrtx, proj_attr& proj_attr, std::vecto
 }
 
 // maps NDC values to a SDL graphics window
-void to_srn_space(std::vector<vec3>& clip_vrtx, std::vector<vec3>& srn_vrtx) {
+void to_srn_space(std::vector<vec3>& proj_vrtx, std::vector<vec3>& srn_vrtx) {
+        for (int i=0; i<proj_vrtx.size(); i++) {
+            vec3 v;
+
+            // box within the range [-1, 1]
+            v.x = proj_vrtx[i].x / proj_vrtx[i].z;
+            v.y = proj_vrtx[i].y / proj_vrtx[i].z;
+            v.z = proj_vrtx[i].z;
+
+            srn_vrtx.emplace_back(v);
+        }
 }   
 
 #endif
