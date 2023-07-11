@@ -6,7 +6,7 @@
 #include <string>
 
 void draw_text(SDL_Surface* surface, TTF_Font* font, int x, int y, std::string text, std::string h_align="left") {
-        uint margin = 10;
+    uint margin = 10;
 
     // using black as the transparent color
     SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface->format, 0, 0, 0));

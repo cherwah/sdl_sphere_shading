@@ -9,7 +9,8 @@
 #include "transform.hpp"
 
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[]) 
+{
 
     /******************************************************
      * Initialize SDL.

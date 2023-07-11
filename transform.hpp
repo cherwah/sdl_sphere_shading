@@ -7,7 +7,8 @@
 
 
 // bring model from object space to world space
-void to_world_space(std::vector<vec3>& model_vrtx, world_attr& world_attr, std::vector<vec3>& world_vrtx) {
+void to_world_space(std::vector<vec3>& model_vrtx, world_attr& world_attr, std::vector<vec3>& world_vrtx) 
+{
     for (int i=0; i<model_vrtx.size(); i++) {
         vec3 v = model_vrtx[i] * world_attr.scale;
         v = v * world_attr.rot;
@@ -17,7 +18,8 @@ void to_world_space(std::vector<vec3>& model_vrtx, world_attr& world_attr, std::
 };
 
 // determine camera space axis vectors and camera's origin-offset
-void compute_cam_attr(cam_attr& cam_attr, vec3& pos, vec3& look, vec3& up) {
+void setup_cam_attr(cam_attr& cam_attr, vec3& pos, vec3& look, vec3& up) 
+{
     cam_attr.pos = pos;
     cam_attr.look = look;
     cam_attr.up = up;
@@ -45,7 +47,8 @@ void compute_cam_attr(cam_attr& cam_attr, vec3& pos, vec3& look, vec3& up) {
 }
 
 // bring model to camera space coordinates
-void to_cam_space(std::vector<vec3>& world_vrtx, cam_attr& cam_attr, std::vector<vec3>& cam_vrtx) {
+void to_cam_space(std::vector<vec3>& world_vrtx, cam_attr& cam_attr, std::vector<vec3>& cam_vrtx) 
+{
     for (int i=0; i<world_vrtx.size(); i++) {
         vec3 v;
 
@@ -73,23 +76,37 @@ void to_cam_space(std::vector<vec3>& world_vrtx, cam_attr& cam_attr, std::vector
     }
 }
 
+void setup_proj_attr(float fov_y_rad, float width, float height, float near, float far, proj_attr& proj_attr) 
+{
+    proj_attr.fov_y = 1 / tan(fov_y_rad / 2);
+    proj_attr.width = width;
+    proj_attr.height = height;
+    proj_attr.near = near;
+    proj_attr.far = far;
+
+    proj_attr.aspect = width / height;
+    proj_attr.fov_x = 2 * atan(tan(fov_y_rad / 2) * proj_attr.aspect);
+}
+
 // projecting 3d vrtx to 2d vrtx
-void to_proj_space(std::vector<vec3>& cam_vrtx, proj_attr& proj_attr, std::vector<vec3>& proj_vrtx) {
+void to_proj_space(std::vector<vec3>& cam_vrtx, proj_attr& proj_attr, std::vector<vec3>& proj_vrtx) 
+{
 
 }
 
 // maps NDC values to a SDL graphics window
-void to_srn_space(std::vector<vec3>& proj_vrtx, std::vector<vec3>& srn_vrtx) {
-        for (int i=0; i<proj_vrtx.size(); i++) {
-            vec3 v;
+void to_srn_space(std::vector<vec3>& proj_vrtx, std::vector<vec3>& srn_vrtx) 
+{
+    for (int i=0; i<proj_vrtx.size(); i++) {
+        vec3 v;
 
-            // box within the range [-1, 1]
-            v.x = proj_vrtx[i].x / proj_vrtx[i].z;
-            v.y = proj_vrtx[i].y / proj_vrtx[i].z;
-            v.z = proj_vrtx[i].z;
+        // normalize x and y with z;
+        v.x = proj_vrtx[i].x / proj_vrtx[i].z;
+        v.y = proj_vrtx[i].y / proj_vrtx[i].z;
+        v.z = proj_vrtx[i].z;
 
-            srn_vrtx.emplace_back(v);
-        }
+        srn_vrtx.emplace_back(v);
+    }
 }   
 
 #endif
