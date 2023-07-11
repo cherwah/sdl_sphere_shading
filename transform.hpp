@@ -16,8 +16,13 @@ void to_world_space(std::vector<vec3>& model_vrtx, world_attr& world_attr, std::
     }
 };
 
-// compute camera space coordinates (camera's UP and LOOK vectors must be set)
-void to_cam_space(std::vector<vec3>& world_vrtx, cam_attr& cam_attr, std::vector<vec3>& cam_vrtx) {
+// determine camera space axis vectors and camera's origin-offset
+void compute_cam_attr(cam_attr& cam_attr, vec3& pos, vec3& look, vec3& up) {
+    cam_attr.pos = pos;
+    cam_attr.look = look;
+    cam_attr.up = up;
+
+    // normalize axis vectors
     cam_attr.up.norm();
     cam_attr.look.norm();
     
@@ -39,12 +44,38 @@ void to_cam_space(std::vector<vec3>& world_vrtx, cam_attr& cam_attr, std::vector
     cam_attr.orig_ofst.z = -cam_attr.look.dot(cam_attr.pos);
 }
 
-// projecting 3d vrtx to 2d vrtx
-void to_proj_space(std::vector<vec3>& cam_vrtx, proj_attr& proj_attr, std::vector<vec3>& proj_vrtx) {
+// bring model to camera space coordinates
+void to_cam_space(std::vector<vec3>& world_vrtx, cam_attr& cam_attr, std::vector<vec3>& cam_vrtx) {
+    for (int i=0; i<world_vrtx.size(); i++) {
+        vec3 v;
+
+        // align to new x-axis
+        v.x = world_vrtx[i].x * cam_attr.right.x;
+        v.y = world_vrtx[i].y * cam_attr.right.y;
+        v.z = world_vrtx[i].z * cam_attr.right.z;
+
+        // align to new y-axis
+        v.x *= cam_attr.up.x;
+        v.y *= cam_attr.up.y;
+        v.z *= cam_attr.up.z;
+
+        // align to new z-axis
+        v.x *= cam_attr.look.x;
+        v.y *= cam_attr.look.y;
+        v.z *= cam_attr.look.z;
+
+        // move to the front of the camera
+        v.x += cam_attr.orig_ofst.x;
+        v.y += cam_attr.orig_ofst.y;
+        v.z += cam_attr.orig_ofst.z;
+
+        cam_vrtx.emplace_back(v);
+    }
 }
 
-// perspective division and clip vrtx within frustum volume
-void to_clip_space(std::vector<vec3>& proj_vrtx, std::vector<vec3>& clip_vrtx) {
+// projecting 3d vrtx to 2d vrtx
+void to_proj_space(std::vector<vec3>& cam_vrtx, proj_attr& proj_attr, std::vector<vec3>& proj_vrtx) {
+
 }
 
 // maps NDC values to a SDL graphics window
