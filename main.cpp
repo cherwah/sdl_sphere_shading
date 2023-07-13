@@ -116,8 +116,8 @@ int main(int argc, char* argv[])
 
         // draw model
 
-        std::vector
-        draw_uv_sphere(surface, model_vrtx);
+        // std::vector
+        // draw_uv_sphere(surface, model_vrtx);
 
         times++;
         draw_text(surface, font, 0, 0, "FPS: " + std::to_string(fps), "right");
