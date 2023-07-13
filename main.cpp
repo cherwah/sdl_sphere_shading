@@ -113,7 +113,6 @@ int main(int argc, char* argv[])
         SDL_FillRect(surface, NULL, SDL_MapRGBA(surface->format, 0, 0, 0, 255));
 
 
-
         // draw model
 
         // std::vector

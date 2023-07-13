@@ -89,24 +89,28 @@ void setup_proj_attr(float fov_y_rad, float width, float height, float near, flo
 }
 
 // projecting 3d vrtx to 2d vrtx
-void to_proj_space(std::vector<vec3>& cam_vrtx, proj_attr& proj_attr, std::vector<vec3>& proj_vrtx) 
+void to_srn_space(std::vector<vec3>& cam_vrtx, proj_attr& proj_attr, std::vector<vec3>& srn_vrtx) 
 {
-
-}
-
-// maps NDC values to a SDL graphics window
-void to_srn_space(std::vector<vec3>& proj_vrtx, std::vector<vec3>& srn_vrtx) 
-{
-    for (int i=0; i<proj_vrtx.size(); i++) {
+    for (int i=0; i<cam_vrtx.size(); i++) {
         vec3 v;
 
         // normalize x and y with z;
-        v.x = proj_vrtx[i].x / proj_vrtx[i].z;
-        v.y = proj_vrtx[i].y / proj_vrtx[i].z;
-        v.z = proj_vrtx[i].z;
+        v.x = cam_vrtx[i].x / cam_vrtx[i].z;
+        v.y = cam_vrtx[i].y / cam_vrtx[i].z;
+        v.z = cam_vrtx[i].z;
+
+        // scale to screen space
+        v.x *= proj_attr.fov_x;
+        v.y *= proj_attr.fov_y;
+
+        // translate to screen space
+        v.x += proj_attr.width / 2;
+        v.y += proj_attr.height / 2;
 
         srn_vrtx.emplace_back(v);
     }
-}   
+
+}
+
 
 #endif
