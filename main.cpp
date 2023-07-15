@@ -21,8 +21,9 @@ int main(int argc, char* argv[])
     SDL_Texture* texture;
     TTF_Font* font;
 
-    float width = 540;
-    float height = 540;
+    float width = 1024;
+    float height = 768;
+
 
 
     // initializing underlying grpahics API
@@ -63,7 +64,6 @@ int main(int argc, char* argv[])
 
     font = TTF_OpenFont("fonts/comic_code.ttf", 18);
 
-
     /******************************************************
      * Setup our Sphere model.
      *****************************************************/
@@ -71,7 +71,7 @@ int main(int argc, char* argv[])
 
     // create model
     std::vector<vec3> model_vrtx, world_vrtx, cam_vrtx, proj_vrtx, clip_vrtx, srn_vrtx;
-    create_uv_sphere(model_vrtx);
+    rect(model_vrtx);
 
     // transform to world space
     vec3 scale(1, 1, 1);
@@ -85,9 +85,7 @@ int main(int argc, char* argv[])
     vec3 up(0, 1, 0);
     vec3 look(0, 0, 1);
     cam_attr cam_attr(pos, up, look);
-    to_cam_space(world_vrtx, cam_attr, cam_vrtx);
-    
-
+    to_cam_space(world_vrtx, cam_attr, cam_vrtx);    
 
     /******************************************************
      * SDL Event Loop.
@@ -125,8 +123,7 @@ int main(int argc, char* argv[])
             fps = times;
             times = 0;
         }      
-        
-
+       
         // update texture
         SDL_UpdateTexture(texture, NULL, surface->pixels, surface->pitch);       
         SDL_RenderCopy(renderer, texture, NULL, NULL);

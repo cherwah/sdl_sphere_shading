@@ -18,7 +18,7 @@ x = r * sin(φ) * cos(θ)
 y = r * sin(φ) * sin(θ)
 z = r * cos(φ)
 */
-void create_uv_sphere(std::vector<vec3>& vrtx) 
+void uv_sphere(std::vector<vec3>& vrtx) 
 {
     float r = 5.0;
 
@@ -33,6 +33,14 @@ void create_uv_sphere(std::vector<vec3>& vrtx)
             vrtx.emplace_back(vec3(x, y, z));
         }
     }
+}
+
+void rect(std::vector<vec3>& vrtx) 
+{
+    vrtx.emplace_back(vec3(-5.0, -5.0, 0.0));
+    vrtx.emplace_back(vec3(5.0, -5.0, 0.0));
+    vrtx.emplace_back(vec3(5.0, 5.0, 0.0));
+    vrtx.emplace_back(vec3(-5.0, 5.0, 0.0));
 }
 
 #endif

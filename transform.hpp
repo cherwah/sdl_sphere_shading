@@ -76,40 +76,33 @@ void to_cam_space(std::vector<vec3>& world_vrtx, cam_attr& cam_attr, std::vector
     }
 }
 
-void setup_proj_attr(float fov_y_rad, float width, float height, float near, float far, proj_attr& proj_attr) 
-{
-    proj_attr.fov_y = 1 / tan(fov_y_rad / 2);
-    proj_attr.width = width;
-    proj_attr.height = height;
-    proj_attr.near = near;
-    proj_attr.far = far;
-
-    proj_attr.aspect = width / height;
-    proj_attr.fov_x = 2 * atan(tan(fov_y_rad / 2) * proj_attr.aspect);
-}
-
 // projecting 3d vrtx to 2d vrtx
-void to_srn_space(std::vector<vec3>& cam_vrtx, proj_attr& proj_attr, std::vector<vec3>& srn_vrtx) 
+// x' = x * f * AR * (z_n / z)
+// y' = y * f * (z_n / z)
+void to_proj_space(std::vector<vec3>& cam_vrtx, proj_attr& proj_attr, std::vector<vec3>& srn_vrtx) 
 {
+    float aspect = proj_attr.width / proj_attr.height;
+    float fov_y = 1 / tan(proj_attr.fov_y_rad / 2);
+
     for (int i=0; i<cam_vrtx.size(); i++) {
         vec3 v;
 
         // normalize x and y with z;
-        v.x = cam_vrtx[i].x / cam_vrtx[i].z;
-        v.y = cam_vrtx[i].y / cam_vrtx[i].z;
+        if (cam_vrtx[i].z == 0) {
+            v.x = cam_vrtx[i].x;
+            v.y = cam_vrtx[i].y;
+        } else {
+            v.x = cam_vrtx[i].x / cam_vrtx[i].z;
+            v.y = cam_vrtx[i].y / cam_vrtx[i].z;
+        }
         v.z = cam_vrtx[i].z;
 
-        // scale to screen space
-        v.x *= proj_attr.fov_x;
-        v.y *= proj_attr.fov_y;
-
-        // translate to screen space
-        v.x += proj_attr.width / 2;
-        v.y += proj_attr.height / 2;
+        // taking aspect ratio of screen for projection into consideration
+        v.x *= fov_y * aspect * (proj_attr.near / v.z);
+        v.y *= fov_y * (proj_attr.near / v.z);
 
         srn_vrtx.emplace_back(v);
     }
-
 }
 
 
