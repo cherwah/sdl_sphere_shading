@@ -2,6 +2,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <iostream>
 #include <vector>
+#include <cmath>
 
 #include "text.hpp"
 #include "model.hpp"
@@ -87,6 +88,12 @@ int main(int argc, char* argv[])
     cam_attr cam_attr(pos, up, look);
     to_cam_space(world_vrtx, cam_attr, cam_vrtx);    
 
+    // transform to perspective projective space
+    float fov_y_deg = 60;
+    float fov_y_rad = fov_y_deg * (M_PI / 180);
+
+    proj_attr proj_attr(fov_y_rad, width, height, 0.1, 100);
+
     /******************************************************
      * SDL Event Loop.
      *****************************************************/
@@ -109,7 +116,6 @@ int main(int argc, char* argv[])
         
         // clear screen
         SDL_FillRect(surface, NULL, SDL_MapRGBA(surface->format, 0, 0, 0, 255));
-
 
         // draw model
 
