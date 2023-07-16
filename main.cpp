@@ -118,7 +118,7 @@ int main(int argc, char* argv[])
     /******************************************************
      * SDL Event Loop.
      *****************************************************/
-    Uint32 times = 0, start_tick, fps = 60;
+    Uint32 times = 0, start_tick = 0, fps = 60;
 
     SDL_Event event;
     bool running = true;
@@ -130,33 +130,30 @@ int main(int argc, char* argv[])
             }            
         }
 
-
-        if (times == 0) {
-            start_tick = SDL_GetTicks();
-        }
-        
         // clear screen
         SDL_FillRect(surface, NULL, SDL_MapRGBA(surface->format, 0, 0, 0, 255));
 
-        // draw model
-
-        // std::vector
-        // draw_uv_sphere(surface, model_vrtx);
-
-        times++;
         draw_text(surface, font, 0, 0, "FPS: " + std::to_string(fps), "right");
 
-        if (SDL_GetTicks() - start_tick >= 1000) {
+        Uint32 now_tick = SDL_GetTicks();
+        if (now_tick - start_tick >= 1000) {
             fps = times;
             times = 0;
+
+            start_tick = now_tick;
         }      
        
+        times++;
+        
+
         // update texture
         SDL_UpdateTexture(texture, NULL, surface->pixels, surface->pitch);       
         SDL_RenderCopy(renderer, texture, NULL, NULL);
 
         // refresh graphics window
         SDL_RenderPresent(renderer);
+        // std::cout << "times: " << times << ", start_tick: " << start_tick << "\n";
+        
 
         // close to 60 fps
         // SDL_Delay(16);
