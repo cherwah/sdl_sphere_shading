@@ -22,8 +22,8 @@ int main(int argc, char* argv[])
     SDL_Texture* texture;
     TTF_Font* font;
 
-    float width = 1024;
-    float height = 768;
+    float width = 640;
+    float height = 480;
 
 
 
@@ -39,9 +39,9 @@ int main(int argc, char* argv[])
     }
 
     // position window at bottom left of screen    
-    SDL_DisplayMode DM;
-    SDL_GetCurrentDisplayMode(0, &DM);
-    SDL_SetWindowPosition(window, 0, DM.h - height);
+    // SDL_DisplayMode DM;
+    // SDL_GetCurrentDisplayMode(0, &DM);
+    // SDL_SetWindowPosition(window, 0, DM.h - height);
 
     // get hardware renderer
     if (!(renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC))) {
@@ -74,6 +74,11 @@ int main(int argc, char* argv[])
     std::vector<vec3> model_vrtx, world_vrtx, cam_vrtx, proj_vrtx, clip_vrtx, srn_vrtx;
     rect(model_vrtx);
 
+    std::cout << "model_vrtx: \n";
+    for (auto& v : model_vrtx) {
+        std::cout << v.x << ", " << v.y << ", " << v.z << "\n";
+    }
+
     // transform to world space
     vec3 scale(1, 1, 1);
     vec3 rot(0, 0, 0);
@@ -81,18 +86,34 @@ int main(int argc, char* argv[])
     world_attr world_attr(scale, rot, trans);
     to_world_space(model_vrtx, world_attr, world_vrtx);  
 
+    std::cout << "world_vrtx: \n";
+    for (auto& v : world_vrtx) {
+        std::cout << v.x << ", " << v.y << ", " << v.z << "\n";
+    }
+
     // transform to camera space
     vec3 pos(0, 0, 0);
     vec3 up(0, 1, 0);
     vec3 look(0, 0, 1);
-    cam_attr cam_attr(pos, up, look);
+    cam_attr cam_attr;
+    setup_cam_attr(cam_attr, pos, up, look);
     to_cam_space(world_vrtx, cam_attr, cam_vrtx);    
+
+    std::cout << "cam_vrtx: \n";
+    for (auto& v : cam_vrtx) {
+        std::cout << v.x << ", " << v.y << ", " << v.z << "\n";
+    }
 
     // transform to perspective projective space
     float fov_y_deg = 60;
     float fov_y_rad = fov_y_deg * (M_PI / 180);
-
     proj_attr proj_attr(fov_y_rad, width, height, 0.1, 100);
+    to_proj_space(cam_vrtx, proj_attr, proj_vrtx);
+
+    std::cout << "proj_vrtx: \n";
+    for (auto& v : proj_vrtx) {
+        std::cout << v.x << ", " << v.y << ", " << v.z << "\n";
+    }
 
     /******************************************************
      * SDL Event Loop.
@@ -138,7 +159,7 @@ int main(int argc, char* argv[])
         SDL_RenderPresent(renderer);
 
         // close to 60 fps
-        SDL_Delay(16);
+        // SDL_Delay(16);
     }
 
     /******************************************************

@@ -75,6 +75,7 @@ public:
 
 class cam_attr {
 public:
+    cam_attr() {}
     cam_attr(vec3& pos, vec3& up, vec3& look)
         : pos(pos), up(up), look(look) {}
 

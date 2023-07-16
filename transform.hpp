@@ -5,13 +5,12 @@
 #include "structs.hpp"
 
 
-
 // bring model from object space to world space
 void to_world_space(std::vector<vec3>& model_vrtx, world_attr& world_attr, std::vector<vec3>& world_vrtx) 
 {
     for (int i=0; i<model_vrtx.size(); i++) {
         vec3 v = model_vrtx[i] * world_attr.scale;
-        v = v * world_attr.rot;
+        // v = v * world_attr.rot;
         v = v + world_attr.trans;
         world_vrtx.emplace_back(v);
     }
@@ -53,24 +52,22 @@ void to_cam_space(std::vector<vec3>& world_vrtx, cam_attr& cam_attr, std::vector
         vec3 v;
 
         // align to new x-axis
-        v.x = world_vrtx[i].x * cam_attr.right.x;
-        v.y = world_vrtx[i].y * cam_attr.right.y;
-        v.z = world_vrtx[i].z * cam_attr.right.z;
+        v.x = world_vrtx[i].x * cam_attr.right.x 
+            + world_vrtx[i].x * cam_attr.look.x 
+            + world_vrtx[i].x * cam_attr.up.x 
+            + cam_attr.orig_ofst.x;
 
         // align to new y-axis
-        v.x *= cam_attr.up.x;
-        v.y *= cam_attr.up.y;
-        v.z *= cam_attr.up.z;
+        v.y = world_vrtx[i].y * cam_attr.right.y
+            + world_vrtx[i].y * cam_attr.look.y
+            + world_vrtx[i].y * cam_attr.up.y
+            + cam_attr.orig_ofst.y;
 
         // align to new z-axis
-        v.x *= cam_attr.look.x;
-        v.y *= cam_attr.look.y;
-        v.z *= cam_attr.look.z;
-
-        // move to the front of the camera
-        v.x += cam_attr.orig_ofst.x;
-        v.y += cam_attr.orig_ofst.y;
-        v.z += cam_attr.orig_ofst.z;
+        v.z = world_vrtx[i].z * cam_attr.right.z
+            + world_vrtx[i].z * cam_attr.look.z
+            + world_vrtx[i].z * cam_attr.up.z
+            + cam_attr.orig_ofst.z;
 
         cam_vrtx.emplace_back(v);
     }
@@ -84,22 +81,16 @@ void to_proj_space(std::vector<vec3>& cam_vrtx, proj_attr& proj_attr, std::vecto
     float aspect = proj_attr.width / proj_attr.height;
     float fov_y = 1 / tan(proj_attr.fov_y_rad / 2);
 
+    float eps = 0.0001;
+
     for (int i=0; i<cam_vrtx.size(); i++) {
         vec3 v;
 
-        // normalize x and y with z;
-        if (cam_vrtx[i].z == 0) {
-            v.x = cam_vrtx[i].x;
-            v.y = cam_vrtx[i].y;
-        } else {
-            v.x = cam_vrtx[i].x / cam_vrtx[i].z;
-            v.y = cam_vrtx[i].y / cam_vrtx[i].z;
-        }
+        float z = proj_attr.near / (cam_vrtx[i].z + eps);
+       
+        v.x = cam_vrtx[i].x * fov_y * aspect * z;
+        v.y = cam_vrtx[i].y * fov_y * z;
         v.z = cam_vrtx[i].z;
-
-        // taking aspect ratio of screen for projection into consideration
-        v.x *= fov_y * aspect * (proj_attr.near / v.z);
-        v.y *= fov_y * (proj_attr.near / v.z);
 
         srn_vrtx.emplace_back(v);
     }

@@ -37,10 +37,10 @@ void uv_sphere(std::vector<vec3>& vrtx)
 
 void rect(std::vector<vec3>& vrtx) 
 {
-    vrtx.emplace_back(vec3(-5.0, -5.0, 0.0));
-    vrtx.emplace_back(vec3(5.0, -5.0, 0.0));
-    vrtx.emplace_back(vec3(5.0, 5.0, 0.0));
-    vrtx.emplace_back(vec3(-5.0, 5.0, 0.0));
+    vrtx.emplace_back(vec3(-5.0, -5.0, 5.0));
+    vrtx.emplace_back(vec3(5.0, -5.0, 5.0));
+    vrtx.emplace_back(vec3(5.0, 5.0, 5.0));
+    vrtx.emplace_back(vec3(-5.0, 5.0, 5.0));
 }
 
 #endif
