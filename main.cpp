@@ -143,18 +143,15 @@ int main(int argc, char* argv[])
             start_tick = now_tick;
         }      
        
-        times++;
-        
-
         // update texture
         SDL_UpdateTexture(texture, NULL, surface->pixels, surface->pitch);       
         SDL_RenderCopy(renderer, texture, NULL, NULL);
 
         // refresh graphics window
         SDL_RenderPresent(renderer);
-        // std::cout << "times: " << times << ", start_tick: " << start_tick << "\n";
-        
 
+        times++;
+            
         // close to 60 fps
         // SDL_Delay(16);
     }
