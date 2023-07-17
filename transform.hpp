@@ -17,7 +17,7 @@ void to_world_space(std::vector<vec3>& model_vrtx, world_attr& world_attr, std::
 };
 
 // determine camera space axis vectors and camera's origin-offset
-void setup_cam_attr(cam_attr& cam_attr, vec3& pos, vec3& look, vec3& up) 
+void setup_cam_attr(cam_attr& cam_attr, vec3& pos, vec3& up, vec3& look) 
 {
     cam_attr.pos = pos;
     cam_attr.look = look;
@@ -48,26 +48,29 @@ void setup_cam_attr(cam_attr& cam_attr, vec3& pos, vec3& look, vec3& up)
 // bring model to camera space coordinates
 void to_cam_space(std::vector<vec3>& world_vrtx, cam_attr& cam_attr, std::vector<vec3>& cam_vrtx) 
 {
+
     for (int i=0; i<world_vrtx.size(); i++) {
         vec3 v;
 
         // align to new x-axis
         v.x = world_vrtx[i].x * cam_attr.right.x 
-            + world_vrtx[i].x * cam_attr.look.x 
-            + world_vrtx[i].x * cam_attr.up.x 
+            + world_vrtx[i].y * cam_attr.right.y 
+            + world_vrtx[i].z * cam_attr.right.z 
             + cam_attr.orig_ofst.x;
 
         // align to new y-axis
-        v.y = world_vrtx[i].y * cam_attr.right.y
-            + world_vrtx[i].y * cam_attr.look.y
+        v.y = world_vrtx[i].x * cam_attr.up.x
             + world_vrtx[i].y * cam_attr.up.y
+            + world_vrtx[i].z * cam_attr.up.z
             + cam_attr.orig_ofst.y;
 
         // align to new z-axis
-        v.z = world_vrtx[i].z * cam_attr.right.z
+        v.z = world_vrtx[i].x * cam_attr.look.x
+            + world_vrtx[i].y * cam_attr.look.y
             + world_vrtx[i].z * cam_attr.look.z
-            + world_vrtx[i].z * cam_attr.up.z
             + cam_attr.orig_ofst.z;
+
+        std::cout << "v.z = " << v.z << "\n";
 
         cam_vrtx.emplace_back(v);
     }

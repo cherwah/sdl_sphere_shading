@@ -107,7 +107,7 @@ int main(int argc, char* argv[])
     // transform to perspective projective space
     float fov_y_deg = 60;
     float fov_y_rad = fov_y_deg * (M_PI / 180);
-    proj_attr proj_attr(fov_y_rad, width, height, 0.1, 100);
+    proj_attr proj_attr(fov_y_rad, width, height, 1, 10);
     to_proj_space(cam_vrtx, proj_attr, proj_vrtx);
 
     std::cout << "proj_vrtx: \n";
