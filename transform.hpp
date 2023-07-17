@@ -103,9 +103,12 @@ void to_srn_space(std::vector<vec3>& proj_vrtx, proj_attr& proj_attr, std::vecto
     for (int i=0; i<proj_vrtx.size(); i++) {
         vec3 v;
 
-        v.x = proj_vrtx[i].x * half_wd + half_wd;
-        v.y = proj_vrtx[i].y * half_ht + half_ht; 
+        v.x = proj_vrtx[i].x * half_ht + half_ht;
+        v.y = proj_vrtx[i].y * -half_wd + half_wd; 
         v.z = proj_vrtx[i].z;
+
+        std::cout << "(proj_vrtx.x, proj_vrtx.y, proj_vrtx.z) = " << "(" << proj_vrtx[i].x << ", " << proj_vrtx[i].y << ", " << proj_vrtx[i].z << ")\n";
+        std::cout << "(v.x, v.y, v.z) = " << "(" << v.x << ", " << v.y << ", " << v.z << ")\n";
 
         srn_vrtx.emplace_back(v);
     }
