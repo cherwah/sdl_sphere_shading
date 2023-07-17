@@ -8,6 +8,7 @@
 #include "model.hpp"
 #include "draw.hpp"
 #include "transform.hpp"
+#include "util.hpp"
 
 
 int main(int argc, char* argv[]) 
@@ -71,7 +72,7 @@ int main(int argc, char* argv[])
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
     // create model
-    std::vector<vec3> model_vrtx, world_vrtx, cam_vrtx, proj_vrtx, clip_vrtx, srn_vrtx;
+    std::vector<vec3> model_vrtx, world_vrtx, cam_vrtx, proj_vrtx, srn_vrtx;
     rect(model_vrtx);
 
     std::cout << "model_vrtx: \n";
@@ -106,12 +107,18 @@ int main(int argc, char* argv[])
 
     // transform to perspective projective space
     float fov_y_deg = 60;
-    float fov_y_rad = fov_y_deg * (M_PI / 180);
+    float fov_y_rad = to_rad(fov_y_deg);
     proj_attr proj_attr(fov_y_rad, width, height, 1, 10);
     to_proj_space(cam_vrtx, proj_attr, proj_vrtx);
 
     std::cout << "proj_vrtx: \n";
     for (auto& v : proj_vrtx) {
+        std::cout << v.x << ", " << v.y << ", " << v.z << "\n";
+    }
+
+    // transform to screen space
+    to_srn_space(proj_vrtx, proj_attr, srn_vrtx);
+        for (auto& v : srn_vrtx) {
         std::cout << v.x << ", " << v.y << ", " << v.z << "\n";
     }
 
