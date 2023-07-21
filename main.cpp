@@ -72,7 +72,7 @@ int main(int argc, char* argv[])
     // create model
     std::vector<vec3> model_vrtx, world_vrtx, cam_vrtx, proj_vrtx, srn_vrtx;
     // rect(model_vrtx);
-    uv_sphere(model_vrtx, 200, 180, 90);
+    uv_sphere(model_vrtx, 1, 100, 100);
 
     std::cout << "model_vrtx: \n";
     for (auto& v : model_vrtx) {
@@ -107,7 +107,7 @@ int main(int argc, char* argv[])
     // transform to perspective projective space
     float fov_y_deg = 60;
     float fov_y_rad = to_rad(fov_y_deg);
-    proj_attr proj_attr(fov_y_rad, width, height, 0.1, 100);
+    proj_attr proj_attr(fov_y_rad, width, height, 1, 100);
     to_proj_space(cam_vrtx, proj_attr, proj_vrtx);
 
     std::cout << "proj_vrtx: \n";
@@ -116,7 +116,7 @@ int main(int argc, char* argv[])
     }
 
     // transform to screen space
-    to_srn_space(world_vrtx, proj_attr, srn_vrtx);
+    to_srn_space(proj_vrtx, proj_attr, srn_vrtx);
         for (auto& v : srn_vrtx) {
         std::cout << v.x << ", " << v.y << ", " << v.z << "\n";
     }

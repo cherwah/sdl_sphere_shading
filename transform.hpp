@@ -86,9 +86,12 @@ void to_proj_space(std::vector<vec3>& cam_vrtx, proj_attr& proj_attr, std::vecto
         vec3 v;
 
         float z = proj_attr.near / (cam_vrtx[i].z + eps);
-       
-        v.x = cam_vrtx[i].x * fov_y * aspect * z;
-        v.y = cam_vrtx[i].y * fov_y * z;
+
+        v.x = cam_vrtx[i].x * z;
+        v.y = cam_vrtx[i].y * z;
+
+        // v.x = cam_vrtx[i].x * fov_y * aspect * z;
+        // v.y = cam_vrtx[i].y * fov_y * z;
         v.z = cam_vrtx[i].z;
 
         srn_vrtx.emplace_back(v);
@@ -103,11 +106,11 @@ void to_srn_space(std::vector<vec3>& proj_vrtx, proj_attr& proj_attr, std::vecto
     for (int i=0; i<proj_vrtx.size(); i++) {
         vec3 v;
 
-        v.x = proj_vrtx[i].x + half_wd;
-        v.y = proj_vrtx[i].y + half_ht; 
+        // v.x = proj_vrtx[i].x + half_wd;
+        // v.y = proj_vrtx[i].y + half_ht; 
 
-        // v.x = proj_vrtx[i].x * half_wd + half_wd;
-        // v.y = proj_vrtx[i].y * -half_ht + half_ht; 
+        v.x = proj_vrtx[i].x * half_wd + half_wd;
+        v.y = proj_vrtx[i].y * -half_ht + half_ht; 
         v.z = proj_vrtx[i].z;
 
         srn_vrtx.emplace_back(v);
