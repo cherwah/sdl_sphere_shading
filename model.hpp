@@ -18,18 +18,18 @@ x = r * sin(φ) * cos(θ)
 y = r * sin(φ) * sin(θ)
 z = r * cos(φ)
 */
-void uv_sphere(std::vector<vec3>& vrtx) 
+void uv_sphere(std::vector<vec3>& vrtx, float r, int n_stacks, int n_slices) 
 {
-    float r = 5.0;
-
-    for (float i=0; i<20; i++) {
-        float u = 2.0 * M_PI / 20.0;
-        for (int j=0; j<20; j++) {
-            float v = M_PI / 20.0;
-            float x = r * cos(u) * sin(v);
-            float y = r * sin(u) * sin(v);
-            float z = r * cos(v);
-
+    for (int i=0; i<n_stacks - 1; i++) {
+        float phi = (i + 1) * M_PI / n_stacks;
+     
+        for (int j=0; j<n_slices; j++) {
+            float theta = j * 2 * M_PI / n_slices;
+     
+            float x = r * sin(phi) * cos(theta);
+            float y = r * cos(phi);
+            float z = r * sin(phi) * sin(theta);
+     
             vrtx.emplace_back(vec3(x, y, z));
         }
     }

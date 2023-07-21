@@ -23,10 +23,8 @@ int main(int argc, char* argv[])
     SDL_Texture* texture;
     TTF_Font* font;
 
-    float width = 640;
-    float height = 480;
-
-
+    float width = 1024;
+    float height = 1024;
 
     // initializing underlying grpahics API
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -73,7 +71,8 @@ int main(int argc, char* argv[])
 
     // create model
     std::vector<vec3> model_vrtx, world_vrtx, cam_vrtx, proj_vrtx, srn_vrtx;
-    rect(model_vrtx);
+    // rect(model_vrtx);
+    uv_sphere(model_vrtx, 200, 180, 90);
 
     std::cout << "model_vrtx: \n";
     for (auto& v : model_vrtx) {
@@ -108,7 +107,7 @@ int main(int argc, char* argv[])
     // transform to perspective projective space
     float fov_y_deg = 60;
     float fov_y_rad = to_rad(fov_y_deg);
-    proj_attr proj_attr(fov_y_rad, width, height, 1, 10);
+    proj_attr proj_attr(fov_y_rad, width, height, 0.1, 100);
     to_proj_space(cam_vrtx, proj_attr, proj_vrtx);
 
     std::cout << "proj_vrtx: \n";
@@ -117,7 +116,7 @@ int main(int argc, char* argv[])
     }
 
     // transform to screen space
-    to_srn_space(proj_vrtx, proj_attr, srn_vrtx);
+    to_srn_space(world_vrtx, proj_attr, srn_vrtx);
         for (auto& v : srn_vrtx) {
         std::cout << v.x << ", " << v.y << ", " << v.z << "\n";
     }
@@ -140,6 +139,21 @@ int main(int argc, char* argv[])
         // clear screen
         SDL_FillRect(surface, NULL, SDL_MapRGBA(surface->format, 0, 0, 0, 255));
 
+        SDL_LockSurface(surface);
+
+        Uint32 color = SDL_MapRGBA(surface->format, 255, 255, 255, 255);
+
+        for (int i=0; i< srn_vrtx.size(); i++) {
+            if ((srn_vrtx[i].x > 0 && srn_vrtx[i].x < width) &&
+                (srn_vrtx[i].y > 0 && srn_vrtx[i].y < height)) {
+                Uint32* pixel = (Uint32*)((Uint8*)surface->pixels + (int)srn_vrtx[i].y * surface->pitch + (int)srn_vrtx[i].x * surface->format->BytesPerPixel);
+                *pixel = color;
+            }
+        }
+
+        SDL_UnlockSurface(surface);
+
+        // draw Frames Per Sec info
         draw_text(surface, font, 0, 0, "FPS: " + std::to_string(fps), "right");
 
         Uint32 now_tick = SDL_GetTicks();
