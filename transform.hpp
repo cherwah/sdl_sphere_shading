@@ -92,7 +92,7 @@ void to_proj_space(std::vector<vec3>& cam_vrtx, proj_attr& proj_attr, std::vecto
 
         // v.x = cam_vrtx[i].x * fov_y * aspect * z;
         // v.y = cam_vrtx[i].y * fov_y * z;
-        v.z = cam_vrtx[i].z;
+        v.z = proj_attr.near;
 
         srn_vrtx.emplace_back(v);
     }
